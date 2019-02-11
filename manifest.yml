@@ -1,0 +1,6 @@
+name: Inventory
+category: Clusters
+subcategory: Staff Only
+description: System Inventory.
+icon: fa://gear
+role: inventory
