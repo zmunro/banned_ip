@@ -10,4 +10,4 @@ to be done:
     touch tmp/restart.txt
 
 This can also be done through the Open OnDemand developer interface.
-# Inventory
+# Banned_IPs

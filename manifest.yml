@@ -1,6 +1,6 @@
-name: Inventory
+name: Banned IPs
 category: Clusters
 subcategory: Staff Only
-description: System Inventory.
+description: Banned IPs.
 icon: fa://gear
-role: inventory
+role: banned_ips
