@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="https://ondemand.cluster.tufts.edu/pun/dev/inventory/css/inventory_styles.css">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-        <title>Inventory</title>
+        <title>Banned IPs</title>
         <meta charset="utf-8">
+        <style>
+            th {
+                border-bottom: 1px solid black;
+            }
+            table {
+                border-bottom: 1px solid black;
+            }
+        </style>
     </head>
     <body>
         <h2>Date: {{date}}</h2>
-
-        <table id="inventoryTable" style="width:50%">
+        <table id="bannedIpTable" style="width:50%">
             <tr>
-                <th><b></b></th>
+                <th><b>IP</b></th>
             </tr>
             <tr>
                 <td></td>
@@ -21,92 +25,14 @@
         <p><br><br><br><br><br></p>
 
         <script>
-            // I like to put javascript in separate file but it breaks the page
-            //  so I am leaving it here for now
-            function formatBytes(a,b) {
-                if(0 === a)
-                    return"0 Bytes";
-                var c = 1024;
-                var d = b || 2;
-                var e = ["Bytes","KB","MB","GB","TB","PB","EB","ZB","YB"]
-                var f = Math.floor(Math.log(a) / Math.log(c));
-                return parseFloat((a / Math.pow(c,f)).toFixed(d)) + " " + e[f];
-            }
-            
             var info = "{{output}}".split(",");
-            var nodes = "{{nodes}}".split(",");
-            var counts = "{{counts}}".split(",");
-            var table = document.getElementById("inventoryTable");
-            
-            
-            //TODO: add units to memory, MB???
-            //creates each line of table
-            line = info[0].split(" ");
-            var myRow = table.insertRow();
-            myRow.style = "border-bottom: 2px solid black;";
-            var cellOne = myRow.insertCell();
-            cellOne.innerHTML = "<div>" + line[0] + "</div>";
-            var cellTwo = myRow.insertCell();
-            cellTwo.innerHTML = "<div>" + line[1] + "</div>";
-            var cellThree = myRow.insertCell();
-            cellThree.innerHTML = "<div>" + line[2] + "</div>";
-            
-
-            currentRow = 1;
-            totalBytes = 0;
-            totalCPUs = 0;
-            for(i = 0; i < nodes.length; i++) {
-                var myHeader = table.insertRow();
-                myHeader.classList.add("header");
-                cpus = 0;
-                memory = 0;
-                for(j = 0; j < counts[i]; j++) {
-                    var myRow = table.insertRow();
-                    line = info[currentRow + j].split(" ");
-                    var cellOne = myRow.insertCell();
-                    cellOne.innerHTML = "<div>" + line[0] + "</div>";
-                    var cellTwo = myRow.insertCell();
-                    cellTwo.innerHTML = "<div>" + line[1] + "</div>";
-                    var cellThree = myRow.insertCell();
-                    bytes = formatBytes(parseInt(line[2] * 1000000));
-                    cellThree.innerHTML = "<div>" + bytes + "</div>";
-                    cpus += parseInt(line[1]);
-                    memory += parseInt(line[2]);
-                }
-                currentRow += j;
-                chevron = '<i class="fa fa-chevron-down"></i>';
-
-                var cellOne = myHeader.insertCell();
-                cellOne.innerHTML =  chevron + "<span>  " + nodes[i] + " (total: " + parseInt(counts[i]) + ")</span>";
-                var cellTwo = myHeader.insertCell();
-                cellTwo.innerHTML = "<div>" + cpus + "</div>";
-                var cellThree = myHeader.insertCell();
-                totalBytes += parseInt(memory)* 1000000;
-                totalCPUs += parseInt(cpus);
-                bytes = formatBytes(parseInt(memory) * 1000000);
-                cellThree.innerHTML = "<div>" + String(bytes) + "</div>";
+            var table = document.getElementById("bannedIpTable");
+            console.log(info);
+            for(i = 0; i < info.length; i++) {
+                var myRow = table.insertRow();
+                var cellOne = myRow.insertCell();
+                cellOne.innerHTML = info[i];
             }
-
-            $('.header').click(function(){
-                classes = this.children[0].children[0].classList;
-                if (classes == "fa fa-chevron-right") {
-                    this.children[0].children[0].classList = "fa fa-chevron-down";
-                } else {
-                    this.children[0].children[0].classList = "fa fa-chevron-right";
-                }
-                $(this).nextUntil('tr.header').slideToggle(200);
-            });
-            
-            var row = table.insertRow();
-            row.classList.add("header");
-            row.style = "border-top: 2px solid black;"
-            var cellOne = row.insertCell();
-            cellOne.innerHTML ="<div> Total </div>";
-            var cellTwo = row.insertCell();
-            cellTwo.innerHTML = "<div> " + totalCPUs + "</div>";
-            var cellThree = row.insertCell();
-            cellThree.innerHTML ="<div>"+ formatBytes(totalBytes) +"</div>";
-            row.style = "border-top: 2px solid black;";
         </script>
     </body>
 </html>
