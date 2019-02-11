@@ -1,6 +1,6 @@
-name: Banned IPs
+name: bannedips
 category: Clusters
 subcategory: Staff Only
 description: Banned IPs.
 icon: fa://gear
-role: banned_ips
+role: bannedips
